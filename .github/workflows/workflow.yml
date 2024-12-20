@@ -1,0 +1,42 @@
+name: GitHub Actions Demo
+on:
+  on: [push, pull_request]
+jobs:
+  job1:
+    name: this is job1
+    runs-on: ubuntu-latest
+    steps:
+        - name: Print a greeting
+          env:
+            MY_VAR: Hi there! My name is
+            FIRST_NAME: job1
+            MIDDLE_NAME: The
+            LAST_NAME: Octocat
+          run: |
+            echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+  job2:
+    name: this is job2
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a greeting
+        env:
+          MY_VAR: Hi there! My name is
+          FIRST_NAME: job2
+          MIDDLE_NAME: The
+          LAST_NAME: Octocat
+        run: |
+          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+  job3:
+    name: this is job3
+    needs: [job1, job2]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a greeting
+        env:
+          MY_VAR: Hi there! My name is
+          FIRST_NAME: job3
+          MIDDLE_NAME: The
+          LAST_NAME: Octocat
+        run: |
+          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
