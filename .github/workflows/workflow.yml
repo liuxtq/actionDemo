@@ -1,18 +1,18 @@
 name: GitHub Actions Demo
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 jobs:
   job1:
     name: this is job1
     runs-on: ubuntu-latest
     steps:
         - name: Print a greeting
-          env:
-            MY_VAR: Hi there! My name is
-            FIRST_NAME: job1
-            MIDDLE_NAME: The
-            LAST_NAME: Octocat
           run: |
-            echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+            docker run -d --name oracle19c -p 1524:1521 -p 5502:5500 -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=123456 -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+
   job2:
     name: this is job2
     needs: job1
