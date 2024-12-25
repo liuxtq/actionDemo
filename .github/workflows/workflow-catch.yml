@@ -27,6 +27,7 @@ jobs:
           -Dversion=19.3.0.0 \
           -Dpackaging=jar \
           -Dfile=ojdbc8.jar
+          pwd
 
       - name: Save oracle Cache
         #if: steps.restore.outputs.cache-hit != 'true'
