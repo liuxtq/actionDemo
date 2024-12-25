@@ -15,6 +15,19 @@ jobs:
         with:
           path: ~/.docker
           key: Linux-docker-image-oracle19c
+
+      - name: Download and Install Oracle JDBC Driver
+        if: steps.restore.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          wget https://download.oracle.com/otn-pub/otn_software/jdbc/236/ojdbc8.jar
+          mvn install:install-file \
+          -DgroupId=com.oracle \
+          -DartifactId=ojdbc8 \
+          -Dversion=19.3.0.0 \
+          -Dpackaging=jar \
+          -Dfile=ojdbc8.jar
+
       - name: Pull Docker image
         run: |
           docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
@@ -40,6 +53,7 @@ jobs:
           do
             echo 1
             log_output=$(docker logs oracle19c 2>&1 | grep -i "XDB initialized." || true)
+            echo log_output=$log_output
             echo 2
             if [ -z "$log_output" ]; then
               echo "'complete' not found in the logs, retrying in 10 seconds..."
