@@ -6,10 +6,8 @@ on:
     branches: [ "main" ]
 jobs:
   job1:
-    name: this is job1
-    runs-on: ubuntu-latest
-    steps:
       - name: docker info
         run: |
+          pwd
           docker info
 
