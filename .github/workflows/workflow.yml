@@ -11,14 +11,12 @@ jobs:
     steps:
       - name: run oracle container
         run: |
-           #docker run -d --name oracle19c -p 1524:1521 -p 5502:5500 -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=123456 -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
            echo ignore docker start
            docker run -d --name oracle19c -p 1521:1521 \
            -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
            -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
            registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-           docker exec -it oracle19c /bin/bash
-           sqlplus / as sysdba
+           docker exec -it oracle19c sqlplus / as sysdba
            ALTER PLUGGABLE DATABASE ORCLPDB1 OPEN;
            ALTER USER system IDENTIFIED BY Oracle123;
   job2:
