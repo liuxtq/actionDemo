@@ -35,6 +35,7 @@ jobs:
         run: |
           docker ps 
           docker logs oracle19c
+          sleep 20
           while true
           do
             echo 1
