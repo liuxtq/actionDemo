@@ -18,7 +18,7 @@ jobs:
       - name: Pull Docker image
         run: |
           docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-          echo run
+          echo run123
       - name: Save oracle Cache
         if: steps.restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
