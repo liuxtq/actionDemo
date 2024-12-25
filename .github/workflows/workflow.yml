@@ -5,55 +5,20 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
-  job1:
-    name: this is job1
+  job4:
+    name: this is job4
     runs-on: ubuntu-latest
     steps:
-      - name: run oracle container
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker images
+        uses: actions/cache@v3
+        with:
+          path: ~/.docker
+          key: ${{ runner.os }}-docker-image-${{ hashFiles('**/Dockerfile', '**/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-image-
+      - name: Pull Docker image
         run: |
-           echo ignore docker start
-           docker run -d --name oracle19c -p 1521:1521 \
-           -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
-           -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
-           registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-      - name: Verify DM Database is running
-        shell: bash
-        env:
-          container_name: oracle19c
-        run: |
-          docker ps
-          while true; do
-            log_output=$(docker logs "$container_name" 2>&1 | grep -i "XDB initialized.")
-            if [ -z "$log_output" ]; then
-              echo "'complete' not found in the logs, retrying in 10 seconds..."
-              sleep 10
-            else
-              echo "'XDB initialized.' found in the logs, continuing."
-              break
-            fi
-          done
-  job2:
-    name: this is job2
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download and Install Oracle JDBC Driver
-        run: |
-          wget https://download.oracle.com/otn-pub/otn_software/jdbc/236/ojdbc8.jar
-          mvn install:install-file \
-          -DgroupId=com.oracle \
-          -DartifactId=ojdbc8 \
-          -Dversion=19.3.0.0 \
-          -Dpackaging=jar \
-          -Dfile=ojdbc8.jar
-        shell: bash
-  job3:
-    name: this is job3
-    needs: [job1, job2]
-    runs-on: ubuntu-latest
-    steps:
-      - name: run
-        run: |
-          echo connect oracle.
-          docker exec oracle19c  sqlplus system/Oracle123@localhost:1521/ORCLPDB1
-          select count(1) from all_tables;
+          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
