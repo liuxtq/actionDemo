@@ -24,6 +24,12 @@ jobs:
         with:
           path: ~/.docker
           key: Linux-docker-image-oracle19c
+      - name: run oracle container
+        run: |
+          docker run -d --name oracle19c -p 1521:1521 \
+          -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
+          -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
+          registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
       - name: Verify DM Database is running
         shell: bash
         env:
