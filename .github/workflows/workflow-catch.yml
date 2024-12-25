@@ -18,6 +18,7 @@ jobs:
       - name: Pull Docker image
         run: |
           docker pull hello-world
+          echo run
       - name: Save oracle Cache
         if: steps.restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
