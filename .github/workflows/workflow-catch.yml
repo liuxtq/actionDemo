@@ -14,15 +14,15 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: ~/.docker
-          key: Linux-docker-image-hello
+          key: Linux-docker-image-oracle19c
       - name: Pull Docker image
         run: |
-          docker pull hello-world
+          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
           echo run
       - name: Save oracle Cache
         if: steps.restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
           path: ~/.docker
-          key: Linux-docker-image-hello
+          key: Linux-docker-image-oracle19c
 
