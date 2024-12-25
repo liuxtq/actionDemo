@@ -13,7 +13,7 @@ jobs:
         id: restore
         uses: actions/cache/restore@v3
         with:
-          path: ~/.docker
+          path: ~/.m2
           key: Linux-maven-ojdbc8
 
       - name: Download and Install Oracle JDBC Driver
@@ -27,11 +27,11 @@ jobs:
           -Dversion=19.3.0.0 \
           -Dpackaging=jar \
           -Dfile=ojdbc8.jar
-          echo ~
+          echo $(ls -a ~)
       - name: Save oracle Cache
         #if: steps.restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
-          path: ~/.docker
+          path: ~/.m2
           key: Linux-maven-ojdbc8
 
