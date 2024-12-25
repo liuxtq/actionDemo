@@ -17,7 +17,7 @@ jobs:
           key: Linux-docker-image-oracle19c
 
       - name: Download and Install Oracle JDBC Driver
-        if: steps.restore.outputs.cache-hit != 'true'
+        #if: steps.restore.outputs.cache-hit != 'true'
         shell: bash
         run: |
           wget https://download.oracle.com/otn-pub/otn_software/jdbc/236/ojdbc8.jar
