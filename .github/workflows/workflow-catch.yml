@@ -35,7 +35,9 @@ jobs:
         run: |
           while true
           do
+            echo 1
             log_output=$(docker logs oracle19c 2>&1 | grep -i "XDB initialized.")
+            echo 2
             if [ -z "$log_output" ]; then
               echo "'complete' not found in the logs, retrying in 10 seconds..."
               sleep 10
