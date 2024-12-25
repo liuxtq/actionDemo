@@ -16,7 +16,7 @@ jobs:
           path: os.path.join("${{ runner.tool_cache }}","ojdbc8", "${{ runner.arch }}".lower())
           key: Linux-maven-ojdbc8
 
-      - name: Download and Install Oracle JDBC Driver
+      - name: Download and Install Oracle JDBC Driver1
         #if: steps.restore.outputs.cache-hit != 'true'
         shell: bash
         run: |
