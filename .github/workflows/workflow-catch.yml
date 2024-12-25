@@ -9,5 +9,3 @@ jobs:
       - name: docker info
         run: |
           pwd
-          docker info
-
