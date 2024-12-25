@@ -33,6 +33,8 @@ jobs:
       - name: Verify DM Database is running
         shell: bash
         run: |
+          docker ps 
+          docker logs oracle19c
           while true
           do
             echo 1
