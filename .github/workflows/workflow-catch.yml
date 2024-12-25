@@ -13,7 +13,7 @@ jobs:
         id: restore
         uses: actions/cache/restore@v3
         with:
-          path: /var/lib/docker
+          path: ~/.docker
           key: Linux-docker-image-oracle19c
       - name: Pull Docker image
         run: |
@@ -22,9 +22,21 @@ jobs:
         if: steps.restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
-          path: /var/lib/docker
+          path: ~/.docker
           key: Linux-docker-image-oracle19c
-      - name: docker info
+      - name: Verify DM Database is running
+        shell: bash
+        env:
+          container_name: oracle19c
         run: |
-          docker info
+            while true; do
+              log_output=$(docker logs "$container_name" 2>&1 | grep -i "XDB initialized.")
+              if [ -z "$log_output" ]; then
+                echo "'complete' not found in the logs, retrying in 10 seconds..."
+                sleep 10
+              else
+                echo "'XDB initialized.' found in the logs, continuing."
+                break
+              fi
+            done
 
