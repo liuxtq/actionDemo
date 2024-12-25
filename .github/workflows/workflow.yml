@@ -9,23 +9,25 @@ jobs:
     name: this is job1
     runs-on: ubuntu-latest
     steps:
-        - name: Print a greeting
+        - name: run oracle container
           run: |
-            docker run -d --name oracle19c -p 1524:1521 -p 5502:5500 -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=123456 -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-
+#            docker run -d --name oracle19c -p 1524:1521 -p 5502:5500 -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=123456 -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+             echo ignore docker start
   job2:
     name: this is job2
     needs: job1
     runs-on: ubuntu-latest
     steps:
-      - name: Print a greeting
-        env:
-          MY_VAR: Hi there! My name is
-          FIRST_NAME: job2
-          MIDDLE_NAME: The
-          LAST_NAME: Octocat
+      - name: Download and Install Oracle JDBC Driver
         run: |
-          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+          wget https://download.oracle.com/otn-pub/otn_software/jdbc/236/ojdbc8.jar
+          mvn install:install-file \
+          -DgroupId=com.oracle \
+          -DartifactId=ojdbc8 \
+          -Dversion=19.3.0.0 \
+          -Dpackaging=jar \
+          -Dfile=ojdbc8.jar
+        shell: bash
   job3:
     name: this is job3
     needs: [job1, job2]
