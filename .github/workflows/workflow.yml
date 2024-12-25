@@ -16,9 +16,22 @@ jobs:
            -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
            -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
            registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-           docker exec -it oracle19c sqlplus / as sysdba
-           ALTER PLUGGABLE DATABASE ORCLPDB1 OPEN;
-           ALTER USER system IDENTIFIED BY Oracle123;
+      - name: Verify DM Database is running
+        shell: bash
+        env:
+          container_name: oracle19c
+        run: |
+          docker ps
+          while true; do
+            log_output=$(docker logs "$container_name" 2>&1 | grep -i "XDB initialized.")
+            if [ -z "$log_output" ]; then
+              echo "'complete' not found in the logs, retrying in 10 seconds..."
+              sleep 10
+            else
+              echo "'XDB initialized.' found in the logs, continuing."
+              break
+            fi
+          done
   job2:
     name: this is job2
     needs: job1
@@ -42,5 +55,5 @@ jobs:
       - name: run
         run: |
           echo connect oracle.
-          docker exec -it oracle19c  sqlplus system/Oracle123@localhost:1521/ORCLPDB1
+          docker exec oracle19c  sqlplus system/Oracle123@localhost:1521/ORCLPDB1
           select count(1) from all_tables;
