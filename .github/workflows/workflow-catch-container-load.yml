@@ -1,9 +1,9 @@
 name: Docker Cache image Demo
-#on:
-#  push:
-#    branches: [ "main" ]
-#  pull_request:
-#    branches: [ "main" ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   job1:
     name: this is job1
@@ -14,14 +14,18 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: ~/docker/image
-          key: Linux-oracle19c
+          key: Linux-nginx-container
 
       - name: docker pull image
         if: steps.restore.outputs.cache-hit != 'true'
         run: |
           docker pull nginx
           mkdir -p ~/docker/image
-          docker save -o ~/docker/image/nginx.tar nginx:latest
+          docker run --name nginx0 -d nginx
+          docker commit nginx0 nginx:v1
+          docker save -o ~/docker/image/nginx.tar nginx:v1
+          docker stop nginx0
+          docker rm nginx0
       - name: docker run image
         run: |
           echo $(ls ~/docker/image)
@@ -33,4 +37,4 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: ~/docker/image
-          key: Linux-nginx
+          key: Linux-nginx-container
