@@ -1,4 +1,4 @@
-name: Docker Cache Demo
+name: Docker Cache image Demo
 on:
   push:
     branches: [ "main" ]
