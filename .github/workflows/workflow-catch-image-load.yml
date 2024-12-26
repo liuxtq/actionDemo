@@ -1,0 +1,31 @@
+name: Docker Cache Demo
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  job1:
+    name: this is job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore oracle Cache
+        id: restore
+        uses: actions/cache/restore@v3
+        with:
+          path: ~/docker/image
+          key: Linux-oracle19c
+
+      - name: docker pull image
+        if: steps.restore.outputs.cache-hit != 'true'
+        uses: docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+        run: |
+          mkdir -p ~/docker/image
+          docker save -o ~/docker/image/nginx.tar nginx:latest
+
+      - name: Save oracle Cache
+        if: steps.restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3
+        with:
+          path: ~/docker/image
+          key: Linux-oracle19c
