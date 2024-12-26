@@ -14,25 +14,20 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: ~/docker/image
-          key: Linux-nginx
+          key: Linux-oracle19c
 
       - name: docker pull image
         if: steps.restore.outputs.cache-hit != 'true'
         run: |
-          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+          docker pull nginx
           mkdir -p ~/docker/image
-
+          docker save -o ~/docker/image/nginx.tar nginx:latest
       - name: docker run image
         run: |
           echo $(ls ~/docker/image)
           docker load -i ~/docker/image/nginx.tar
-          docker run -d --name oracle19c -p 1521:1521 \
-          -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
-          -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
-          registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-          
-          docker commit oracle19c registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-          docker save -o ~/docker/image/nginx.tar nginx:latest
+          docker run --name nginx1 -d nginx
+
       - name: Save oracle Cache
         if: steps.restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3

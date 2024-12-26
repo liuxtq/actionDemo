@@ -1,0 +1,21 @@
+name: Windows Demo
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  job1:
+    name: this is job1
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: marceloprado/Setup-Docker@v1
+
+      - name: Run Docker commands
+        run: |
+          docker --version
+          docker info
