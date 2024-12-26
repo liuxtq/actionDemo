@@ -22,6 +22,10 @@ jobs:
           docker pull nginx
           mkdir -p ~/docker/image
           docker save -o ~/docker/image/nginx.tar nginx:latest
+      - name: docker run image
+        run: |
+          echo $(ls ~/docker/image)
+          docker run --name nginx1 -d nginx
 
       - name: Save oracle Cache
         if: steps.restore.outputs.cache-hit != 'true'
