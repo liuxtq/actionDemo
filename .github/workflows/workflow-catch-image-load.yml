@@ -18,8 +18,8 @@ jobs:
 
       - name: docker pull image
         if: steps.restore.outputs.cache-hit != 'true'
-        uses: docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
         run: |
+          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
           mkdir -p ~/docker/image
           docker save -o ~/docker/image/nginx.tar nginx:latest
 
