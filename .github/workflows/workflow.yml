@@ -16,7 +16,7 @@ jobs:
       - name: run oracle container
         run: |
           docker run -d --name oracle19c -p 1521:1521 \
-          -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
+          -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB -e ORACLE_PWD=Oracle123 \
           -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
           registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
       - name: Verify DM Database is running
@@ -39,7 +39,9 @@ jobs:
             fi
           done
           echo connect oracle
-          docker exec oracle19c1 sqlplus system/Oracle123@127.0.0.1:1521/ORCLPDB1
+          docker exec oracle19c sqlplus system/Oracle123@127.0.0.1:1521/ORCLPDB
+          sleep 30
+          telnet 127.0.0.1 1521
 
 #  job2:
 #    name: this is job2
