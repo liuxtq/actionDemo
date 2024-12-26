@@ -1,4 +1,9 @@
 name: GitHub Actions Demo
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   job1:
     name: this is job1
@@ -33,28 +38,31 @@ jobs:
               break
             fi
           done
-  job2:
-    name: this is job2
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download and Install Oracle JDBC Driver
-        run: |
-          wget https://download.oracle.com/otn-pub/otn_software/jdbc/236/ojdbc8.jar
-          mvn install:install-file \
-          -DgroupId=com.oracle \
-          -DartifactId=ojdbc8 \
-          -Dversion=19.3.0.0 \
-          -Dpackaging=jar \
-          -Dfile=ojdbc8.jar
-        shell: bash
-  job3:
-    name: this is job3
-    needs: [job1, job2]
-    runs-on: ubuntu-latest
-    steps:
-      - name: run
-        run: |
-          echo connect oracle.
-          docker exec oracle19c  sqlplus system/Oracle123@localhost:1521/ORCLPDB1
-          select count(1) from all_tables;
+          echo connect oracle
+          docker exec oracle19c1 sqlplus system/Oracle123@127.0.0.1:1521/ORCLPDB1
+
+#  job2:
+#    name: this is job2
+#    needs: job1
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Download and Install Oracle JDBC Driver
+#        run: |
+#          wget https://download.oracle.com/otn-pub/otn_software/jdbc/236/ojdbc8.jar
+#          mvn install:install-file \
+#          -DgroupId=com.oracle \
+#          -DartifactId=ojdbc8 \
+#          -Dversion=19.3.0.0 \
+#          -Dpackaging=jar \
+#          -Dfile=ojdbc8.jar
+#        shell: bash
+#  job3:
+#    name: this is job3
+#    needs: [job1, job2]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: run
+#        run: |
+#          echo connect oracle.
+#          docker exec oracle19c  sqlplus system/Oracle123@127.0.0.1:1521/ORCLPDB1
+#          select count(1) from all_tables;
