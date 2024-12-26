@@ -1,9 +1,9 @@
 name: Docker Cache Demo
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+#on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
 jobs:
   job1:
     name: this is job1
@@ -12,9 +12,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: Pull Docker image
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-
-      - name: build
-        run: docker build . --file Dockerfile --tag oracle:$(date +%s)
+#      - name: Pull Docker image
+#        uses: satackey/action-docker-layer-caching@v0.0.11
+#        continue-on-error: true
+#
+#      - name: build
+#        run: docker build . --file Dockerfile --tag oracle:$(date +%s)
