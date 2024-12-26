@@ -25,6 +25,7 @@ jobs:
       - name: docker run image
         run: |
           echo $(ls ~/docker/image)
+          docker load -i ~/docker/image/nginx.tar
           docker run --name nginx1 -d nginx
 
       - name: Save oracle Cache
