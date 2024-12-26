@@ -4,20 +4,27 @@ jobs:
     name: this is job1
     runs-on: ubuntu-latest
     steps:
+      - name: Pull Docker image
+        run: |
+          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+
       - name: run oracle container
         run: |
-           echo ignore docker start
-           docker run -d --name oracle19c -p 1521:1521 \
-           -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
-           -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
-           registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+          docker run -d --name oracle19c -p 1521:1521 \
+          -e ORACLE_SID=ORCL -e ORACLE_PDB=ORCLPDB1 -e ORACLE_PWD=Oracle123 \
+          -e ORACLE_EDITION=standard -e ORACLE_CHARACTERSET=AL32UTF8 \
+          registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
       - name: Verify DM Database is running
         shell: bash
-        env:
-          container_name: oracle19c
         run: |
-          while true; do
-            log_output=$(docker logs "$container_name" 2>&1 | grep -i "XDB initialized.")
+          docker ps 
+          sleep 10
+          while true
+          do
+            echo 1
+            log_output=$(docker logs oracle19c 2>&1 | grep -i "XDB initialized." || true)
+            echo log_output=$log_output
+            echo 2
             if [ -z "$log_output" ]; then
               echo "'complete' not found in the logs, retrying in 10 seconds..."
               sleep 10
@@ -51,24 +58,3 @@ jobs:
           echo connect oracle.
           docker exec oracle19c  sqlplus system/Oracle123@localhost:1521/ORCLPDB1
           select count(1) from all_tables;
-  job4:
-    name: this is job4
-    needs: [job1]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore oracle Cache
-        id: restore
-        uses: actions/cache/restore@v3
-        with:
-          path: ~/.docker
-          key: Linux-docker-image-oracle19c
-
-      - name: Save oracle Cache
-        if: steps.restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
-        with:
-          path: ~/.docker
-          key: Linux-docker-image-oracle19c
-      - name: Pull Docker image
-        run: |
-          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
