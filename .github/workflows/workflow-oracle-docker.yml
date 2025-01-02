@@ -1,0 +1,34 @@
+name: Windows Demo
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  job1:
+    name: start oracle container
+    runs-on: ubuntu-latest
+    services:
+      # Oracle service (label used to access the service container)
+      oracle:
+        # Docker Hub image (feel free to change the tag "latest" to any other available one)
+        image: gvenzl/oracle-free:latest
+        # Provide passwords and other environment variables to container
+        env:
+          ORACLE_PASSWORD: Oracle123
+        # Forward Oracle port
+        ports:
+          - 1521:1521
+        # Provide healthcheck script options for startup
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+  job2:
+    name: this is job2
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and Install Oracle JDBC Driver
+        run: |
+          telnet 127.0.0.1 1521
+        shell: bash

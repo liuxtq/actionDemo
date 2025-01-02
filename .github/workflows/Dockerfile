@@ -1,1 +1,0 @@
-FROM registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
