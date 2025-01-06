@@ -44,15 +44,15 @@ jobs:
           
           cp -rf /opt/oracle/instantclient-sqlplus/instantclient_23_6/* /opt/oracle/instantclient-basic/instantclient_23_6/
           
-          ls /opt/oracle/instantclient-basic
-          ls /opt/oracle/instantclient-sqlplus
+          ls /opt/oracle/instantclient-basic/instantclient_23_6
+          ls /opt/oracle/instantclient-sqlplus/instantclient_23_6
 
       - name: Set up environment variables
         run: |
           echo "export PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH" >> $GITHUB_ENV
           echo "export LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH" >> $GITHUB_ENV
           echo "export TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6" >> $GITHUB_ENV
-
+          sqlplus -v
       - name: Verify sqlplus
         run: |
           sqlplus -v
