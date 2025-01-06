@@ -26,37 +26,38 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Install libaio1 manually
+      - name: Install libaio1 (required for Oracle Instant Client)
         run: |
-          # Download libaio1 .deb package from Ubuntu archive
-          wget http://archive.ubuntu.com/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-5_amd64.deb
-          
-          # Install the downloaded package
-          sudo dpkg -i libaio1_0.3.112-5_amd64.deb
-          
-          # Ensure there are no unmet dependencies
-          sudo apt-get install -f
-
-      - name: Install Oracle Instant Client
-        run: |
-          # Install necessary dependencies
           sudo apt-get update
-          #sudo apt-get install -y libaio1
+          wget http://archive.ubuntu.com/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-5_amd64.deb
+          sudo dpkg -i libaio1_0.3.112-5_amd64.deb
 
-          # Download and install Oracle Instant Client
-          sudo mkdir /opt/oracle
+      - name: Set up Oracle Instant Client
+        run: |
           wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-basic-linux.x64-23.6.0.24.10.zip
           wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-sqlplus-linux.x64-23.6.0.24.10.zip
 
-          unzip instantclient-basic-linux.x64-23.6.0.24.10.zip -d /opt/oracle
-          unzip instantclient-sqlplus-linux.x64-23.6.0.24.10.zip -d /opt/oracle
+          mkdir -p /opt/oracle/instantclient-basic
+          mkdir -p /opt/oracle/instantclient-sqlplus
+          unzip -q instantclient-basic-linux.x64-23.6.0.24.10.zip -d /opt/oracle/instantclient-basic
+          unzip -q instantclient-sqlplus-linux.x64-23.6.0.24.10.zip -d /opt/oracle/instantclient-sqlplus
           
-          echo "export PATH="$PATH:/opt/oracle/instantclient_23_6" >> ~/.profile
-          echo "export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/oracle/instantclient_23_6" >> ~/.profile
-          source ~/.profile
+          cp -rf /opt/oracle/instantclient-sqlplus/instantclient_23_6/* /opt/oracle/instantclient-basic/instantclient_23_6/
+          
+          ls /opt/oracle/instantclient-basic
+          ls /opt/oracle/instantclient-sqlplus
 
-      - name: Verify sqlplus installation
-        run: sqlplus -version
+      - name: Set up environment variables
+        run: |
+          echo "export PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH" >> $GITHUB_ENV
+          echo "export LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "export TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6" >> $GITHUB_ENV
+
+      - name: Verify sqlplus
+        run: |
+          sqlplus -v
+
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
