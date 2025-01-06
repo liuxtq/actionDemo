@@ -26,11 +26,22 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      - name: Install libaio1 manually
+        run: |
+          # Download libaio1 .deb package from Ubuntu archive
+          wget http://archive.ubuntu.com/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-5_amd64.deb
+          
+          # Install the downloaded package
+          sudo dpkg -i libaio1_0.3.112-5_amd64.deb
+          
+          # Ensure there are no unmet dependencies
+          sudo apt-get install -f
+
       - name: Install Oracle Instant Client
         run: |
           # Install necessary dependencies
           sudo apt-get update
-          sudo apt-get install -y libaio1
+          #sudo apt-get install -y libaio1
 
           # Download and install Oracle Instant Client
           wget https://download.oracle.com/otn_software/linux/instantclient/215000/oracle-instantclient-basic-linuxx64-21.5.0.0.0.zip
