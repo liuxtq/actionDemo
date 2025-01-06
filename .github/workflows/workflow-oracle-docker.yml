@@ -44,11 +44,16 @@ jobs:
           #sudo apt-get install -y libaio1
 
           # Download and install Oracle Instant Client
+          sudo mkdir /opt/oracle
           wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-basic-linux.x64-23.6.0.24.10.zip
-          unzip instantclient-basic-linux.x64-23.6.0.24.10.zip
-          sudo mv instantclient_23_6 /opt/oracle/
-          sudo ln -s /opt/oracle/instantclient_23_6 /opt/oracle/instantclient
-          sudo ln -s /opt/oracle/instantclient/sqlplus /usr/local/bin/sqlplus
+          wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-sqlplus-linux.x64-23.6.0.24.10.zip
+
+          unzip instantclient-basic-linux.x64-23.6.0.24.10.zip -d /opt/oracle
+          unzip instantclient-sqlplus-linux.x64-23.6.0.24.10.zip -d /opt/oracle
+          
+          echo "export PATH="$PATH:/opt/oracle/instantclient_23_6" >> ~/.profile
+          echo "export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/oracle/instantclient_23_6" >> ~/.profile
+          source ~/.profile
 
       - name: Verify sqlplus installation
         run: sqlplus -version
