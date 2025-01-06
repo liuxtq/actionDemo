@@ -26,22 +26,27 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Install libaio1 (required for Oracle Instant Client)
+      - name: Install libaio1 manually
         run: |
-          sudo apt-get update
-          sudo apt-get install -y software-properties-common
-          sudo add-apt-repository universe
-          sudo apt-get update
-          sudo apt-get install -y libaio1
+          # Download libaio1 .deb package from Ubuntu archive
+          wget http://archive.ubuntu.com/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-5_amd64.deb
+          
+          # Install the downloaded package
+          sudo dpkg -i libaio1_0.3.112-5_amd64.deb
+          
+          # Ensure there are no unmet dependencies
+          sudo apt-get install -f
 
-      - name: Set up Oracle Instant Client
+      - name: Download and install Oracle Instant Client
         run: |
-          sudo apt-get update
-         
-          sqlplus -v
+          # Download Oracle Instant Client Basic package (adjust version if necessary)
           wget https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-basic-linux.x64-21.3.0.0.0.zip
-          sudo unzip instantclient-basic-linux.x64-21.3.0.0.0.zip -d /usr/local/lib
-          sudo export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH
+          
+          # Unzip the downloaded Instant Client package
+          unzip instantclient-basic-linux.x64-21.3.0.0.0.zip -d /usr/local/lib
+          
+          # Set the environment variable for Oracle libraries
+          echo "export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
