@@ -43,10 +43,10 @@ jobs:
           wget https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-basic-linux.x64-21.3.0.0.0.zip
           
           # Unzip the downloaded Instant Client package
-          unzip instantclient-basic-linux.x64-21.3.0.0.0.zip -d /usr/local/lib
+          sudo unzip instantclient-basic-linux.x64-21.3.0.0.0.zip -d /usr/local/lib
           
           # Set the environment variable for Oracle libraries
-          echo "export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          sudo echo "export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
