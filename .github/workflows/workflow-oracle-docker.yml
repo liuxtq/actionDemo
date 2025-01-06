@@ -56,8 +56,10 @@ jobs:
           export LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH
           export TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6
           sqlplus -v
+          echo $GITHUB_ENV
       - name: Verify sqlplus
         run: |
+          $GITHUB_ENV
           sqlplus -v
 
 
