@@ -49,14 +49,14 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "export PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH" >> $GITHUB_ENV
-          echo "export LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-          echo "export TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6" >> $GITHUB_ENV
+          echo "PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6" >> $GITHUB_ENV
           export PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH
           export LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH
           export TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6
           sqlplus -v
-          echo $GITHUB_ENV
+          $GITHUB_ENV
       - name: Verify sqlplus
         run: |
           $GITHUB_ENV
