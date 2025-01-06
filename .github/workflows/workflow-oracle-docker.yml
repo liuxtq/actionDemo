@@ -32,9 +32,10 @@ jobs:
           sudo apt-get update
           wget http://archive.ubuntu.com/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-5_amd64.deb
           sudo dpkg -i libaio1_0.3.112-5_amd64.deb
+          sqlplus -v
           wget https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-basic-linux.x64-21.3.0.0.0.zip
           sudo unzip instantclient-basic-linux.x64-21.3.0.0.0.zip -d /usr/local/lib
-          export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH
+          sudo export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH
 
       - name: Install dependencies
         run: |
@@ -43,6 +44,7 @@ jobs:
 
       - name: Wait for Oracle DB to be ready
         run: |
+          echo ${LD_LIBRARY_PATH}
           until echo "SELECT 1 FROM DUAL;" | sqlplus -S system/Oracle123@localhost:1521/FREEPDB1; do
             echo "Waiting for Oracle DB to be ready..."
             sleep 2
