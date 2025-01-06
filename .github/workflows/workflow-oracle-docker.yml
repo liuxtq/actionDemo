@@ -24,30 +24,47 @@ jobs:
           --health-timeout 5s
           --health-retries 10
     steps:
-      - name: Checkout repository
+      - name: Check out code
         uses: actions/checkout@v2
+      - name: Install libaio1 manually
+        run: |
+          # Download libaio1 .deb package from Ubuntu archive
+          wget http://archive.ubuntu.com/ubuntu/pool/main/liba/libaio/libaio1_0.3.112-5_amd64.deb
+          
+          # Install the downloaded package
+          sudo dpkg -i libaio1_0.3.112-5_amd64.deb
+          
+          # Ensure there are no unmet dependencies
+          sudo apt-get install -f
 
+      - name: Install Oracle Instant Client
+        run: |
+          # Install necessary dependencies
+          sudo apt-get update
+          #sudo apt-get install -y libaio1
+
+          # Download and install Oracle Instant Client
+          wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-basic-linux.x64-23.6.0.24.10.zip
+          unzip instantclient-basic-linux.x64-23.6.0.24.10.zip
+          sudo mv instantclient_23_6 /opt/oracle/
+          sudo ln -s /opt/oracle/instantclient_23_6 /opt/oracle/instantclient
+          sudo ln -s /opt/oracle/instantclient/sqlplus /usr/local/bin/sqlplus
+
+      - name: Verify sqlplus installation
+        run: sqlplus -version
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libaio1
+          python -m pip install --upgrade pip
+          pip install cx_Oracle pytest
 
-      - name: Download Oracle Instant Client
+      - name: Wait for Oracle DB to be ready
         run: |
-          curl -LO https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-basic-linux.x64-21.3.0.0.0.zip
-          curl -LO https://download.oracle.com/otn_software/linux/instantclient/213000/instantclient-sqlplus-linux.x64-21.3.0.0.0.zip
+          until echo "SELECT 1 FROM DUAL;" | sqlplus -S system/Oracle123@localhost:1521/FREEPDB1; do
+            echo "Waiting for Oracle DB to be ready..."
+            sleep 2
+          done
 
-      - name: Unzip Oracle Instant Client
+      - name: Run tests
         run: |
-          sudo apt-get install -y unzip
-          unzip instantclient-basic-linux.x64-21.3.0.0.0.zip -d /opt/oracle
-          unzip instantclient-sqlplus-linux.x64-21.3.0.0.0.zip -d /opt/oracle
-
-      - name: Set up environment variables
-        run: |
-          echo "export PATH=/opt/oracle/instantclient_21_3:$PATH" >> $GITHUB_ENV
-          echo "export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_3:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-
-      - name: Verify sqlplus is available
-        run: |
-          sqlplus -v
+          # Run your tests that interact with Oracle DB
+          pytest tests/
