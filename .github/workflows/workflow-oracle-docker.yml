@@ -48,7 +48,7 @@ jobs:
           # Set the environment variable for Oracle libraries
           sudo echo "export LD_LIBRARY_PATH=/usr/local/lib/instantclient_21_3:$LD_LIBRARY_PATH" >> $GITHUB_ENV
           
-          sqlplus -v
+          sudo sqlplus -v
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
