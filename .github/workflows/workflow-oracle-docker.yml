@@ -7,6 +7,8 @@ on:
         type: string
 jobs:
   oracle-service:
+    env:
+      NGROK_TOKEN: 6UJmhcvUht49YHxEf1246_7oANfwQTyBrZEL3QT6yLN
     name: start oracle container
     runs-on: ubuntu-latest
     services:
@@ -74,11 +76,10 @@ jobs:
 #          sleep 5  # Allow ngrok to initialize
 
       - name: Start Ngrok
-        uses: ngrok-actions/ngrok@v2
+        uses: vmactions/ngrok-tunnel@v0.0.1
         with:
-          ngrok_token: 6UJmhcvUht49YHxEf1246_7oANfwQTyBrZEL3QT6yLN # 你的 Ngrok 认证令牌
           port: 1521                                   # 本地服务端口
-          proto: http                                  # 隧道协议
+          protocol: tcp                                  # 隧道协议
 
       - name: Fetch ngrok public URL
         run: curl -s http://127.0.0.1:4040/api/tunnels
