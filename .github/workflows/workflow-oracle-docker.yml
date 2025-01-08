@@ -69,7 +69,7 @@ jobs:
       - name: Start ngrok to expose Oracle
         run: |
           ngrok authtoken 6UJmhcvUht49YHxEf1246_7oANfwQTyBrZEL3QT6yLN
-          ngrok tcp --region=us --remote-addr=1.tcp.ngrok.io:15211 1521
+          ngrok tcp --remote-addr=1.tcp.ngrok.io:15211 1521
           #ngrok tcp 1521 &
           sleep 5  # Allow ngrok to initialize
 
