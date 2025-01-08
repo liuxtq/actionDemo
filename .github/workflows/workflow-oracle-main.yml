@@ -7,4 +7,5 @@ jobs:
   use-oracle-service:
     uses: ./.github/workflows/workflow-oracle-docker.yml
     with:
-      tasks: "Test Task 1, Test Task 2"
+      - Test Task 1
+      - Test Task 2
