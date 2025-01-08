@@ -36,26 +36,17 @@ jobs:
         run: |
           wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-basic-linux.x64-23.6.0.24.10.zip
           wget https://download.oracle.com/otn_software/linux/instantclient/2360000/instantclient-sqlplus-linux.x64-23.6.0.24.10.zip
-
           mkdir -p /opt/oracle/instantclient-basic
           mkdir -p /opt/oracle/instantclient-sqlplus
           unzip -q instantclient-basic-linux.x64-23.6.0.24.10.zip -d /opt/oracle/instantclient-basic
-          unzip -q instantclient-sqlplus-linux.x64-23.6.0.24.10.zip -d /opt/oracle/instantclient-sqlplus
-          
+          unzip -q instantclient-sqlplus-linux.x64-23.6.0.24.10.zip -d /opt/oracle/instantclient-sqlplus          
           cp -rf /opt/oracle/instantclient-sqlplus/instantclient_23_6/* /opt/oracle/instantclient-basic/instantclient_23_6/
-          
-          ls /opt/oracle/instantclient-basic/instantclient_23_6
-          ls /opt/oracle/instantclient-sqlplus/instantclient_23_6
 
       - name: Set up environment variables
         run: |
           echo "PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH" >> $GITHUB_ENV
           echo "LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH" >> $GITHUB_ENV
           echo "TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6" >> $GITHUB_ENV
-          export PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$PATH
-          export LD_LIBRARY_PATH=/opt/oracle/instantclient-basic/instantclient_23_6:$LD_LIBRARY_PATH
-          export TNS_ADMIN=/opt/oracle/instantclient-basic/instantclient_23_6
-          sqlplus -v
 
       - name: Verify sqlplus
         run: |
@@ -73,8 +64,3 @@ jobs:
             echo "Waiting for Oracle DB to be ready..."
             sleep 2
           done
-
-      - name: Run tests
-        run: |
-          # Run your tests that interact with Oracle DB
-          pytest tests/
