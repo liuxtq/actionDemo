@@ -73,7 +73,7 @@ jobs:
           sleep 5  # Allow ngrok to initialize
 
       - name: Fetch ngrok public URL
-        run: curl -s http://127.0.0.1:4040/api/tunnels | jq '.tunnels[0].public_url'
+        run: curl -s http://127.0.0.1:4040/api/tunnels
 
   tasks:
     runs-on: ubuntu-latest
