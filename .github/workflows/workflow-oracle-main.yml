@@ -4,16 +4,32 @@ on:
   push:
     branches: [ "main" ]
 jobs:
-  use-oracle-service:
-    id: oracle-service
-    uses: ./.github/workflows/workflow-oracle-docker.yml
-    with:
-      tasks: 12345678
+#  use-oracle-service:
+#    uses: ./.github/workflows/workflow-oracle-docker.yml
+#    with:
+#      tasks: 12345678
   job1:
     name: test workflow
     runs-on: ubuntu-latest
     steps:
       - name: step1
         run: |
-          echo ${{steps.oracle-service.outputs.ip}}
-          echo ${{steps.oracle-service.outputs.port}}
+          echo 123456
+
+      - services:
+        # Oracle service (label used to access the service container)
+        oracle:
+          # Docker Hub image (feel free to change the tag "latest" to any other available one)
+          image: gvenzl/oracle-free:latest
+          # Provide passwords and other environment variables to container
+          env:
+            ORACLE_PASSWORD: Oracle123
+          # Forward Oracle port
+          ports:
+            - 1521:1521
+          # Provide healthcheck script options for startup
+          options: >-
+            --health-cmd healthcheck.sh
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 10
