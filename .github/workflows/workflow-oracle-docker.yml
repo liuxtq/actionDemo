@@ -83,7 +83,19 @@ jobs:
 
       - name: Fetch ngrok public URL
         run: curl -s http://127.0.0.1:4040/api/tunnels
+      - name: Get Ngrok Public IP and Port
+        id: parse-ngrok
+        run: |
+          NGROK_URL=$(curl -s http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[] | select(.proto=="tcp") | .public_url')
+          IP=$(echo $NGROK_URL | awk -F[/:] '{print $4}')
+          PORT=$(echo $NGROK_URL | awk -F[/:] '{print $5}')
+          echo "::set-output name=ip::$IP"
+          echo "::set-output name=port::$PORT"
 
+      - name: Display Ngrok Details
+        run: |
+          echo "Ngrok Public IP: ${{ steps.parse-ngrok.outputs.ip }}"
+          echo "Ngrok Public Port: ${{ steps.parse-ngrok.outputs.port }}"
 
 
   tasks:
