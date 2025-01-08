@@ -1,10 +1,10 @@
 name: Oracle Service Demo
 on:
-  workflow_call:  # 允许复用
+  workflow_call:
     inputs:
       tasks:
         required: true
-        type: array  # 接受依赖任务列表
+        type: array
 jobs:
   oracle-service:
     name: start oracle container
