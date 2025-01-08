@@ -4,7 +4,7 @@ on:
     inputs:
       tasks:
         required: true
-        type: array
+        type: String
 jobs:
   oracle-service:
     name: start oracle container
@@ -65,4 +65,4 @@ jobs:
     steps:
       - name: Run dependent tasks
         run: | 
-          echo "Running tasks: ${{ inputs.tasks[*] }}"
+          echo "Running tasks: ${{ inputs.tasks }}"
