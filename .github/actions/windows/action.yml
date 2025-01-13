@@ -28,8 +28,8 @@ runs:
         echo ${{inputs.ports}}
         $values = if ('${{inputs.ports}}' -match ' ') {'${{inputs.ports}}' -split ' ' } else { @('${{inputs.ports}}') }
         foreach ($P in $values) {
-          Write-Host "Processing value $P"
-          Write-Host "docker run -d --name  -p "$P:1521" container-registry.oracle.com/database/free:23.5.0.0-lite"
+          Write-Host "Processing value $P:1521"
+          Write-Host "docker run -d --name "oracle-$P" -p "$P:1521" container-registry.oracle.com/database/free:23.5.0.0-lite"
           
         }
       shell: pwsh
