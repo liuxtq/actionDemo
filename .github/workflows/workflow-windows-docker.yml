@@ -15,5 +15,5 @@ jobs:
       - name: Start Oracle container
         shell: cmd
         run: |
-          for /L %%P in (1521,1522) do
+          for /L %%P in (1521,1,1522) do
           echo %%P
