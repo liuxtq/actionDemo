@@ -11,8 +11,9 @@ runs:
 #      - name: Set up Docker
 #        uses: docker/setup-docker-action@v4
 #
-#      - name: Run Docker command
-#        run: docker --version
+    - name: Run Docker command
+      run: docker --version
+
     - name: Start Oracle container
       run: |
         $values = "1521", "1522"
