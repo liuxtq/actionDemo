@@ -15,6 +15,7 @@ jobs:
       - name: Start Oracle container
         shell: cmd
         run: |
-          for %P in (1521,1522) do (
+          SET values=1521 1522
+          FOR %P IN (%values%) DO (
             echo %P
           )
