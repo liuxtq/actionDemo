@@ -13,9 +13,9 @@ jobs:
 #      - name: Run Docker command
 #        run: docker --version
       - name: Start Oracle container
-        shell: cmd
         run: |
-          SET values=1521 1522
-          FOR %P IN (%values%) DO (
-            echo %P
-          )
+          $values = "1521", "1522"
+          foreach ($P in $values) {
+           Write-Host "Processing value $P"
+          }
+        shell: pwsh
