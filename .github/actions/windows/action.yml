@@ -26,7 +26,12 @@ runs:
     - name: Start Oracle container 3
       run: |
         echo ${{inputs.ports}}
-        $values = ${{inputs.ports}}
+        $values = 
+        echo 1111
+        $values = if ('${{inputs.ports}}' -match ' ') {'${{inputs.ports}}' -split ' ' } else { @('${{inputs.ports}}') }
+        echo 2222
+        echo $values
+        echo 3333
         foreach ($P in $values) {
           Write-Host "Processing value $P"
         }
