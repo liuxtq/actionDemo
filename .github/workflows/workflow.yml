@@ -5,6 +5,7 @@ on:
 
 jobs:
   use-oracle-service:
-    uses: ./.github/workflows/workflow-windows-docker.yml
+    runs-on: windows-latest
+    uses: ./.github/actions/widows
     with:
       ports: 1521 1522 1523
