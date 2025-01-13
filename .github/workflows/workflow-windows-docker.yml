@@ -7,15 +7,8 @@ jobs:
     name: this is job1
     runs-on: windows-latest
     steps:
-      - name: Install Docker
-        run: |
-          choco install docker-desktop
-          Start-Process 'C:\Program Files\Docker\Docker\Docker Desktop.exe' -ArgumentList '--install' -Wait
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
 
       - name: Run Docker command
         run: docker --version
-
-      - name: Pull Docker image
-        run: |
-          docker --version
-          docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
