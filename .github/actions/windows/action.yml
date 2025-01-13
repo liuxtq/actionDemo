@@ -20,17 +20,14 @@ runs:
          Write-Host "Processing value $P"
         }
       shell: pwsh
-    - name: Start Oracle container 2
-      run: |
-        echo ${{inputs.ports}}
-        foreach ($P in ${{inputs.ports}}) {
-         Write-Host "Processing value $P"
-        }
-      shell: pwsh
 
     - name: Start Oracle container 3
       run: |
-        $values = "1521, 1522"
-        for $P in $values: do 
-         Write-Host "Processing value $P"
+        echo 111111
+        echo ${{inputs.ports}}
+        $values = '${{ inputs.ports }}' -split ' '
+        echo $values
+        foreach ($P in $values) {
+          Write-Host "Processing value $P"
+        }
       shell: pwsh
