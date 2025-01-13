@@ -1,7 +1,15 @@
 name: GitHub Actions Demo
 on:
-  push:
-    branches: [ "main" ]
+  workflow_call:
+    inputs:
+      ports:
+        required: true
+        type: string
+
+ports:
+  description: The server port to listen on.
+  default: "1521"
+  required: false
 jobs:
   job1:
     name: this is job1
@@ -21,8 +29,8 @@ jobs:
         shell: pwsh
       - name: Start Oracle container 2
         run: |
-          $values = "1521", "1522"
-          for $P in ($values) {
+          echo ${{inputs.ports}}
+          foreach ($P in ${{inputs.ports}}) {
            Write-Host "Processing value $P"
           }
         shell: pwsh
