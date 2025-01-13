@@ -29,7 +29,7 @@ jobs:
 
       - name: Start Oracle container 3
         run: |
-          $values = "1521", "1522"
+          $values = "1521, 1522"
           for $P in $values: do 
            Write-Host "Processing value $P"
         shell: pwsh
