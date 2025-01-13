@@ -7,8 +7,12 @@ jobs:
     name: this is job1
     runs-on: windows-latest
     steps:
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-
-      - name: Run Docker command
-        run: docker --version
+#      - name: Set up Docker
+#        uses: docker/setup-docker-action@v4
+#
+#      - name: Run Docker command
+#        run: docker --version
+      - name: Start Oracle container
+        shell: cmd
+          for /L %%P in (values) do
+          echo %%P
