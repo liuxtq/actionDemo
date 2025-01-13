@@ -6,6 +6,8 @@ on:
 jobs:
   use-oracle-service:
     runs-on: windows-latest
-    uses: ./.github/actions/windows
-    with:
-      ports: 1521 1522 1523
+    steps:
+      - name: windows docker
+        uses: ./.github/actions/windows
+        with:
+          ports: 1521 1522 1523
