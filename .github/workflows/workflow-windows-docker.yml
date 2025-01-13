@@ -14,5 +14,5 @@ jobs:
 #        run: docker --version
       - name: Start Oracle container
         shell: cmd
-          for /L %%P in (values) do
+          for /L %%P in (1521,1522) do
           echo %%P
