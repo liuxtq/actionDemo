@@ -24,6 +24,7 @@ jobs:
 
       - name: Start Oracle container 3
         run: |
+          echo 111111
           echo ${{inputs.ports}}
           $values = '${{ inputs.ports }}' -split ' '
           echo $values
