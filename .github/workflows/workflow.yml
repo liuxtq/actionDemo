@@ -7,6 +7,7 @@ jobs:
   use-oracle-service:
     runs-on: windows-latest
     steps:
+      - uses: actions/checkout@v4
       - name: windows docker
         uses: ./.github/actions/windows
         with:
