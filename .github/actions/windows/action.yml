@@ -13,6 +13,7 @@ runs:
 #
     - name: Run Docker command
       run: docker --version
+      shell: pwsh
 
     - name: Start Oracle container
       run: |
