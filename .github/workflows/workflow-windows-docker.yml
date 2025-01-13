@@ -5,11 +5,11 @@ on:
       ports:
         required: true
         type: string
-
-ports:
-  description: The server port to listen on.
-  default: "1521"
-  required: false
+inputs:
+  ports:
+    description: The server port to listen on.
+    default: "1521"
+    required: false
 jobs:
   job1:
     name: this is job1
