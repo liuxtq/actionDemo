@@ -26,7 +26,7 @@ runs:
     - name: Start Oracle container 3
       run: |
         echo ${{inputs.ports}}
-       
+        $values = ${{inputs.ports}}
         foreach ($P in $values) {
           Write-Host "Processing value $P"
         }
