@@ -25,8 +25,9 @@ jobs:
       - name: Start Oracle container 3
         run: |
           echo ${{inputs.ports}}
-          $values = "${{ inputs.ports }}"
+          $values = ${{ inputs.ports }}
           $valuesArray = $values.Split(' ')
+          echo $valuesArray
           foreach ($P in $valuesArray) {
             Write-Host "Processing value $P"
           }
