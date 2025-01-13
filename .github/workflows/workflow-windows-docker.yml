@@ -26,8 +26,8 @@ jobs:
         run: |
           echo ${{inputs.ports}}
           $values = '${{ inputs.ports }}' -split ' '
-          echo $valuesArray
-          foreach ($P in $valuesArray) {
+          echo $values
+          foreach ($P in $values) {
             Write-Host "Processing value $P"
           }
         shell: pwsh
