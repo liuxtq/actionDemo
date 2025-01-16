@@ -18,8 +18,8 @@ jobs:
           sysctl hw.physicalcpu
           sysctl hw.logicalcpu
           sysctl hw.memsize
-          brew update
-          brew install colima docker
+          brew update 
+          brew install colima docker qemu
 
       - name: Start Colima
         run: |
