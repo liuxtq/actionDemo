@@ -23,7 +23,7 @@ jobs:
 
       - name: Start Colima
         run: |
-          colima start --arch x86_64 --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 6 --cpu 2 --debug
+          colima start --arch x86_64 --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 6 --cpu 2
           colima status
       - name: Pull Oracle Database 23 Free Image
         run: |
