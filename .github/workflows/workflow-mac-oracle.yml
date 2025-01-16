@@ -1,0 +1,38 @@
+# Workflow: workflow demo 入口程序
+name: GitHub Actions Demo
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  setup-oracle23:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          brew install colima qemu
+
+      - name: Start Colima
+        run: |
+          colima start --runtime docker --memory 4 --cpu 2
+
+      - name: Pull Oracle Database 23 Free Image
+        run: |
+          docker pull container-registry.oracle.com/database/free:23.5.0.0-lite
+
+      - name: Run Oracle Database Container
+        run: |
+          docker run -d \
+            --name oracle23-free \
+            -p 1521:1521 \
+            -p 5500:5500 \
+            -e ORACLE_PASSWORD=Oracle123 \
+            container-registry.oracle.com/database/free:23.5.0.0-lite
+
+      - name: Verify Oracle Database
+        run: |
+          docker ps
