@@ -1,3 +1,4 @@
+# Action: windows下安装Docker，通过powershell脚本程序，根据端口列表批量启动容器
 name: GitHub Actions Demo
 inputs:
   ports:
@@ -8,28 +9,27 @@ inputs:
 runs:
   using: "composite"
   steps:
-#      - name: Set up Docker
-#        uses: docker/setup-docker-action@v4
-#
+    - name: Set up Docker
+      uses: docker/setup-docker-action@v4
+
     - name: Run Docker command
       run: docker --version
       shell: pwsh
 
-    - name: Start Oracle container
+    - name: Start Oracle container 1
       run: |
         $values = "1521", "1522"
         foreach ($P in $values) {
          Write-Host "Processing value $P"
         }
       shell: pwsh
-
-    - name: Start Oracle container 3
+    # powershell for循环运行docker容器
+    - name: Start Oracle container 2
       run: |
         echo ${{inputs.ports}}
         $values = if ('${{inputs.ports}}' -match ' ') {'${{inputs.ports}}' -split ' ' } else { @('${{inputs.ports}}') }
         foreach ($P in $values) {
-          Write-Host "Processing value $P"
           Write-Host "docker run -d --name "oracle-$P" -p "${P}:1521" container-registry.oracle.com/database/free:latest"
-          docker run -d --name "oracle-${P}" -p "${P}:1521" container-registry.oracle.com/database/free:latest
+          # docker run -d --name "oracle-${P}" -p "${P}:1521" container-registry.oracle.com/database/free:latest
         }
       shell: pwsh
