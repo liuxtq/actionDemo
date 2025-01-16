@@ -24,7 +24,7 @@ jobs:
 
       - name: Start Colima
         run: |
-          colima start --runtime docker --memory 4 --cpu 2
+          colima start --runtime docker
 
       - name: Pull Oracle Database 23 Free Image
         run: |
