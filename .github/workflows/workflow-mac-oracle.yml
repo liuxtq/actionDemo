@@ -14,7 +14,13 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          brew install colima qemu
+          sysctl machdep.cpu.brand_string
+          sysctl hw.physicalcpu
+          sysctl hw.logicalcpu
+          sysctl hw.memsize
+          brew update
+          brew install docker qemu
+          brew install colima
 
       - name: Start Colima
         run: |
