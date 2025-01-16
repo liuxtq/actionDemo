@@ -25,6 +25,7 @@ jobs:
         run: |
           colima start --arch x86_64 --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 6 --cpu 2
           colima status
+
       - name: Pull Oracle Database 23 Free Image
         run: |
           docker pull container-registry.oracle.com/database/free:23.5.0.0-lite
@@ -32,12 +33,27 @@ jobs:
       - name: Run Oracle Database Container
         run: |
           docker run -d \
-            --name oracle23-free \
+            --name oracle23 \
             -p 1521:1521 \
             -p 5500:5500 \
-            -e ORACLE_PASSWORD=Oracle123 \
+            -e ORACLE_PDB=ORCLPDB \
+            -e ORACLE_PWD=Oracle123 \
             container-registry.oracle.com/database/free:23.5.0.0-lite
 
-      - name: Verify Oracle Database
+      - name: Verify Oracle Database is running
+        id: oracleContainer
+        shell: bash
         run: |
-          docker ps
+            docker ps
+            sleep 10
+            while true; do
+              log_output=$(docker logs oracle23 2>&1 | grep -i "DATABASE IS READY TO USE" || true)
+              if [ -z "$log_output" ]; then
+                echo "'XDB initialized' not found in the logs, retrying in 100 seconds..."
+                docker logs --tail 10 oracle23
+                sleep 30
+              else
+                echo "'XDB initialized.' found in the logs, continuing."
+                break
+              fi
+            done
