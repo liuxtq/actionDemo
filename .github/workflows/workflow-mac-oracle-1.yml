@@ -1,5 +1,5 @@
 # Workflow: workflow demo 入口程序
-name: GitHub Actions Demo
+name: Macos-Oracle Demo
 on:
   push:
     branches: [ "main" ]
@@ -30,10 +30,11 @@ jobs:
       - name: 启动 Oracle 容器（限制 CPU & 内存）
         run: |
           docker run --platform linux/amd64 -d --name oracle23 \
-            --cpus=2 -m=5g \
+            --cpus=1 -m=3g \
             -p 1521:1521 -p 5500:5500 \
             -e ORACLE_PDB=ORCLPDB \
             -e ORACLE_PWD=Oracle123 \
+            -e DB_MEMORY=3g \
             container-registry.oracle.com/database/free:23.5.0.0-lite
 
       - name: Verify Oracle Database is running
