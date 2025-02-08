@@ -52,7 +52,7 @@ jobs:
         id: oracleContainer
         shell: bash
         run: |
-          for port in oracle23-1,oracle23-2,oracle23-3; do
+          for port in oracle23-1 oracle23-2 oracle23-3; do
             while true; do
             log_output=$(docker logs $port" 2>&1 | grep -i "DATABASE IS READY TO USE" || true)
             if [ -z "$log_output" ]; then
