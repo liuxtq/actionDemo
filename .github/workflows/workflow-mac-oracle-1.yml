@@ -12,8 +12,9 @@ jobs:
         run: |
           brew update 
           brew install colima docker qemu
-          colima start --vm-type=vz --vz-rosetta --mount-type=virtiofs
+          colima start --arch x86_64 --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 4
 
+        shell: bash
       - name: 设置 Docker 缓存
         uses: actions/cache@v3
         with:
