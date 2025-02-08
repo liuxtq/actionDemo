@@ -1,8 +1,8 @@
 # Workflow: workflow demo 入口程序
 name: GitHub Actions Demo
-on:
-  push:
-    branches: [ "main" ]
+#on:
+#  push:
+#    branches: [ "main" ]
 
 jobs:
   setup-oracle23:
@@ -24,7 +24,6 @@ jobs:
       - name: Start Colima
         run: |
           colima start --arch x86_64 --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 6 --cpu 2
-          colima status
 
       - name: Pull Oracle Database 23 Free Image
         run: |
