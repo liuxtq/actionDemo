@@ -9,7 +9,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: 启用 Rosetta 并启动 Colima
-        run: |  
+        run: |
+          brew update 
+          brew install colima docker qemu
           colima start --vm-type=vz --vz-rosetta --mount-type=virtiofs
 
       - name: 设置 Docker 缓存
