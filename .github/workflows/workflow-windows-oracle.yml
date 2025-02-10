@@ -14,6 +14,8 @@ jobs:
       - name: Set Executable Permission for Script
         run: chmod +x .github/scripts/oracle.sh
 
+      - uses: vedantmgoyal9/setup-wsl2@main
+
       - name: Install Docker
         shell: wsl-run {0}
         run: |
@@ -27,6 +29,7 @@ jobs:
           docker pull container-registry.oracle.com/database/free:23.5.0.0-lite
 
       - name: 启动 Oracle 容器（限制 CPU & 内存）
+        shell: wsl-run {0}
         run: |
           docker run -d --name oracle23-1521 \
             -p 1521:1521 -p 5501:5500 \
@@ -37,7 +40,7 @@ jobs:
 
       - name: Verify Oracle Database is running
         id: oracleContainer
-        shell: bash
+        shell: wsl-run {0}
         run: |
           for port in oracle23-1521; do
             while true; do
