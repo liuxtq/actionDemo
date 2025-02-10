@@ -1,5 +1,5 @@
 # Workflow: workflow demo 入口程序
-name: Macos-Oracle Demo
+name: Ubuntu-Oracle Demo
 on:
   push:
     branches: [ "main" ]
@@ -13,8 +13,6 @@ jobs:
 
       - name: Set Executable Permission for Script
         run: chmod +x .github/scripts/updatePass.sh
-
-
 
       - name: 预拉取 Oracle 镜像
         run: |
