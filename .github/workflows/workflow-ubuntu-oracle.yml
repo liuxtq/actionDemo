@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4d
 
       - name: Set Executable Permission for Script
         run: chmod +x .github/scripts/updatePass.sh
@@ -26,25 +26,12 @@ jobs:
             -e ORACLE_PWD=Oracle123 \
             -e DB_MEMORY=1.5g \
             container-registry.oracle.com/database/free:23.5.0.0-lite
-#          docker run --platform linux/amd64 -d --name oracle23-2 \
-#            -p 1522:1521 -p 5502:5500 \
-#            -e ORACLE_PDB=ORCLPDB \
-#            -e ORACLE_PWD=Oracle123 \
-#            -e DB_MEMORY=1.5g \
-#            container-registry.oracle.com/database/free:23.5.0.0-lite
-#          docker run --platform linux/amd64 -d --name oracle23-3 \
-#            -p 1523:1521 -p 5503:5500 \
-#            -e ORACLE_PDB=ORCLPDB \
-#            -e ORACLE_PWD=Oracle123 \
-#            -e DB_MEMORY=1.5g \
-#            container-registry.oracle.com/database/free:23.5.0.0-lite
 
       - name: Verify Oracle Database is running
         id: oracleContainer
         shell: bash
         run: |
-#          for port in oracle23-1 oracle23-2 oracle23-3; do
-          for port in oracle23-1; do
+          for port in oracle23-1521; do
             while true; do
             log_output=$(docker logs $port 2>&1 | grep -i "DATABASE IS READY TO USE" || true)
             if [ -z "$log_output" ]; then
