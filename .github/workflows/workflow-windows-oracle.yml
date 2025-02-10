@@ -1,5 +1,5 @@
 # Workflow: workflow demo 入口程序
-name: Windows-Oracle-2 Demo
+name: Windows-Oracle Demo
 #on:
 #  push:
 #    branches: [ "main" ]
@@ -57,5 +57,6 @@ jobs:
           done
 
       - name: Run Password Update Script
+        shell: bash
         run: .github/scripts/oracle.sh 1521 Oracle123
           
