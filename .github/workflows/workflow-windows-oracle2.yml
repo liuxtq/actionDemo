@@ -1,8 +1,8 @@
 # Workflow: workflow demo 入口程序
-name: Windows-Oracle-2 Demo
-#on:
-#  push:
-#    branches: [ "main" ]
+name: Windows-Oracle Demo
+on:
+  push:
+    branches: [ "main" ]
 
 jobs:
   oracle-db:
@@ -14,22 +14,13 @@ jobs:
       - name: Set Executable Permission for Script
         run: chmod +x .github/scripts/oracle.sh
 
-      - uses: vedantmgoyal9/setup-wsl2@main
-
-      - name: Install Docker
-        shell: wsl-run {0}
+      - name: Start Docker Service
         run: |
-          sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-          sudo apt update
-          sudo apt install docker-ce docker-ce-cli containerd.io -y
-          sudo service docker start
-          docker --version
-          docker pull container-registry.oracle.com/database/free:23.5.0.0-lite
+          Start-Service docker
+          Get-Service docker
 
       - name: 启动 Oracle 容器（限制 CPU & 内存）
-        shell: wsl-run {0}
+        shell: bash
         run: |
           docker run -d --name oracle23-1521 \
             -p 1521:1521 -p 5501:5500 \
@@ -40,7 +31,7 @@ jobs:
 
       - name: Verify Oracle Database is running
         id: oracleContainer
-        shell: wsl-run {0}
+        shell: bash
         run: |
           for port in oracle23-1521; do
             while true; do
