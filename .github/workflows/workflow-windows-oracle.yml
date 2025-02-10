@@ -1,12 +1,12 @@
 # Workflow: workflow demo 入口程序
-name: Ubuntu-Oracle Demo
-#on:
-#  push:
-#    branches: [ "main" ]
+name: Windows-Oracle Demo
+on:
+  push:
+    branches: [ "main" ]
 
 jobs:
   oracle-db:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -14,13 +14,21 @@ jobs:
       - name: Set Executable Permission for Script
         run: chmod +x .github/scripts/oracle.sh
 
-      - name: 预拉取 Oracle 镜像
+      - name: Install Docker
+        shell: wsl-run {0}
         run: |
+          sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+          sudo apt update
+          sudo apt install docker-ce docker-ce-cli containerd.io -y
+          sudo service docker start
+          docker --version
           docker pull container-registry.oracle.com/database/free:23.5.0.0-lite
 
       - name: 启动 Oracle 容器（限制 CPU & 内存）
         run: |
-          docker run --platform linux/amd64 -d --name oracle23-1521 \
+          docker run -d --name oracle23-1521 \
             -p 1521:1521 -p 5501:5500 \
             -e ORACLE_PDB=ORCLPDB \
             -e ORACLE_PWD=Oracle123 \
