@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4d
+        uses: actions/checkout@v4
 
       - name: Set Executable Permission for Script
         run: chmod +x .github/scripts/updatePass.sh
