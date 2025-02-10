@@ -1,20 +1,20 @@
 # Workflow: workflow demo 入口程序
 name: Macos-Oracle Demo
-#on:
-#  push:
-#    branches: [ "main" ]
+on:
+  push:
+    branches: [ "main" ]
 
 jobs:
   oracle-db:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-      - name: 启用 Rosetta 并启动 Colima
-        run: |
-          brew update 
-          brew install colima docker qemu
-          colima start --arch x86_64 --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-        shell: bash
+      - name: Set Executable Permission for Script
+        run: chmod +x .github/scripts/updatePass.sh
+
+
 
       - name: 预拉取 Oracle 镜像
         run: |
@@ -59,3 +59,7 @@ jobs:
             fi
             done
           done
+
+      - name: Run Password Update Script
+        run: .github/scripts/updatePass.sh 1521 Oracle123
+          
