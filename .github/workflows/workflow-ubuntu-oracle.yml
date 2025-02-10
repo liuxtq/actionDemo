@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set Executable Permission for Script
-        run: chmod +x .github/scripts/updatePass.sh
+        run: chmod +x .github/scripts/oracle.sh
 
       - name: 预拉取 Oracle 镜像
         run: |
