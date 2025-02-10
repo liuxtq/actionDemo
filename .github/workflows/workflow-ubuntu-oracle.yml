@@ -46,5 +46,5 @@ jobs:
           done
 
       - name: Run Password Update Script
-        run: .github/scripts/updatePass.sh 1521 Oracle123
+        run: .github/scripts/oracle.sh 1521 Oracle123
           
